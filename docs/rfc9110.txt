@@ -67,4 +67,84 @@
   connection is secured and specific to that agent.
 
 3.4. Messages
+- Request:
+  - Can contain header fields for request modifiers, client information and representation metadata,
+    content intended for processing in accordance with the method and trailer fields
+
+- Response:
+  - A request can have multiple responses
+  - Includes status code
+  - Can contain header fields for server information, resource metadata, representation metadata, content
+    to be interpreted in accordance with the status code and trailer fields
+
+3.5. User Agents
+- The term refers to any client program that initiates a request.
+- Most familiar form is the general purpose web browser, but can be other stuff: billboard screens, light bulbs,
+  command-line tools, anything really.
+- Does not imply a human user!
+
+3.6. Origin Server
+- The term refers to a program that can originate authoritative responses for a given target resource.
+
+3.7. Intermediaries
+- HTTP enables intermediaries to satisfy requests through a chain of connections.
+- There are three common forms: Proxy, Gateway and Tunnel.
+- All messages flow from "upstream" to "downstream".
+- Inbound means toward the origin server
+- Outbound means toward the user agent
+
+- Proxy:
+  - Is a message forwarding agent that is chosen by the client
+  - Commonly used to group an organizations HTTP requests through a common intermediary for the sake of
+    security services, annotation services or shared caching.
+    
+- Gateway:
+  - Also known as "reverse proxy"
+  - Acts as an origin server for the outbound connection but translates received requests and forwards
+    them inbound to another server or servers.
+  - Often used for to improve server performance through caching or to enable load balancing of HTTP services
+  - All HTTP requirements applicable to an origin server also apply to the outbound communication gateway.
+
+- Tunnel:
+  - Acts as a blind relay between two connections without changing the messages.
+  - Is not considered a party of the HTTP communication.
+  - Ceases to exist when both ends of the relayed connection are closed.
+
+3.8. Caches
+- A cache is a local store of previous response messages and the subsyste, that controls its message store,
+  retrieval and deletion.
+- Can not be used while client & server are acting as a tunnel.
+- Used to shorten request/response chain.
+- A response is cacheable if a cache is allowed to store a copy of the response message for use in answering
+  subsequent requests.
+- Caching is defined in RFC9111
+
+3.9. Example Message Exchange
+- The following example illustrates a typical HTTP/1.1 message exchange for a GET request on the
+  URI "http://www.example.com/hello.txt"
+
+Client request:
+
+GET /hello.txt HTTP/1.1
+User-Agent: curl/7.64.1
+Host: www.example.com
+Accept-Language: en, mi
+
+
+Server response:
+
+HTTP/1.1 200 OK
+Date: Mon, 27 Jul 2009 12:28:54 GMT
+Server: Apache
+Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT
+ETag: "34aa387-d-1235123eb00"
+Accept-Ranges: bytes
+Content-Length: 51
+Vary: Accept-Encoding
+Content-Type: text/plain
+
+Hello World! My content includes a trailing CRLF.
+
+
+4. Identifiers in HTTP
 
