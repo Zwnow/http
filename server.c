@@ -9,6 +9,7 @@
 
 #define LISTEN_BACKLOG 10
 #define MAX_CLIENTS 100
+
 // Macro for handling errors
 #define handle_error(msg) \
   do { perror(msg); exit(EXIT_FAILURE); } while (0)
@@ -22,13 +23,13 @@ int main(void) {
   fd_set read_fds, all_fds;
   socklen_t peer_addr_size;
 
-  // Create sockfd
+  // Create the sockfd which is just a file descriptor
   int sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sockfd == -1) {
     handle_error("socket");
   }
 
-  // Bind 
+  // Bind address to socket
   my_addr.sin_family = AF_INET;
   my_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
   my_addr.sin_port = htons(8080);
@@ -40,8 +41,10 @@ int main(void) {
   // Listen
   if (listen(sockfd, LISTEN_BACKLOG) == -1)
     handle_error("listen");
-  printf("Listening.\n");
+  printf("Listening on 127.0.0.1:8080\n");
 
+
+  // Initialize the file descriptor set
   FD_ZERO(&all_fds);
   FD_SET(sockfd, &all_fds);
   max_fd = sockfd;
